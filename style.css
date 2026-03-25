@@ -1,0 +1,489 @@
+/* Temel Ayarlar ve Neon Renk Paleti */
+:root {
+    --bg-color: #0d1117;
+    --card-bg: rgba(22, 27, 34, 0.8);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --text-main: #c9d1d9;
+    --text-highlight: #ffffff;
+
+    /* GS Renkleri */
+    --gs-primary: #facc15;
+    /* Sarı */
+    --gs-secondary: #dc2626;
+    /* Kırmızı */
+
+    /* BJK Renkleri */
+    --bjk-primary: #ffffff;
+    /* Beyaz */
+    --bjk-secondary: #52525b;
+    /* Gri/Siyah */
+
+    /* Form Renkleri */
+    --win: #10b981;
+    --draw: #6b7280;
+    --loss: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: var(--text-main);
+}
+
+/* 9:16 Konteyner (Telefon Ekranı Kaydı İçin) */
+#app-container {
+    width: 100%;
+    max-width: 420px;
+    height: 100vh;
+    max-height: 746px;
+    /* 420 * 16/9 */
+    background: radial-gradient(circle at top, #1f2937, var(--bg-color));
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+@media (min-width: 450px) {
+    #app-container {
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        height: 85vh;
+        width: 420px;
+    }
+}
+
+/* Ekran Geçişleri */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    padding: 15px;
+    z-index: 10;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.screen::-webkit-scrollbar {
+    display: none;
+}
+
+.screen.active {
+    display: flex;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ==========================================
+   Loading Ekranı (Fake API)
+   ========================================== */
+#loading-screen {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #000;
+    z-index: 50;
+}
+
+.loader {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s infinite linear;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--text-highlight);
+    font-size: 18px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.loading-subtext {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-bottom: 30px;
+}
+
+.progress-bar {
+    width: 80%;
+    height: 6px;
+    background: #1f2937;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    transition: width 0.2s ease;
+}
+
+/* ==========================================
+   Analiz Ekranı Tasarımı
+   ========================================== */
+.header-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    text-align: center;
+    color: #fbbf24;
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+/* Takımlar ve Form */
+.teams-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--card-bg);
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}
+
+.team img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+}
+
+.team h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-highlight);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.home-team h2 {
+    color: var(--gs-primary);
+}
+
+.away-team h2 {
+    color: var(--bjk-primary);
+}
+
+.form-guide {
+    display: flex;
+    gap: 4px;
+}
+
+.form-badge {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+}
+
+.badge-W {
+    background: var(--win);
+}
+
+.badge-D {
+    background: var(--draw);
+}
+
+.badge-L {
+    background: var(--loss);
+}
+
+.vs-badge {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: #6b7280;
+}
+
+/* Sayısal Özet */
+.stats-summary {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 8px;
+}
+
+.stat-row:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #9ca3af;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.home-stat {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--gs-primary);
+}
+
+.away-stat {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--text-highlight);
+}
+
+/* Grafikler */
+.chart-container {
+    background: var(--card-bg);
+    padding: 5px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 10px;
+    height: 180px;
+    /* Radar için alan */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bar-container {
+    height: 110px;
+}
+
+/* Yapay Zeka Kazanma Olasılığı */
+.prediction-box {
+    margin-top: auto;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.prediction-box h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    color: #a78bfa;
+    margin-bottom: 5px;
+}
+
+.probability-bar {
+    width: 100%;
+    height: 30px;
+    background: #1f2937;
+    border-radius: 15px;
+    display: flex;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.prob-home {
+    background: linear-gradient(90deg, var(--gs-secondary), var(--gs-primary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.prob-tie {
+    background: #4b5563;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.prob-away {
+    background: linear-gradient(90deg, #d4d4d8, var(--bjk-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.probability-bar span {
+    font-weight: 900;
+    color: #fff;
+    font-size: 14px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.prob-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    padding: 0 10px;
+    font-size: 11px;
+    color: #9ca3af;
+    font-weight: bold;
+}
+
+.footer-cta {
+    text-align: center;
+    font-size: 13px;
+    color: #fbbf24;
+    font-weight: bold;
+    padding: 10px;
+    background: rgba(251, 191, 36, 0.1);
+    border-radius: 8px;
+    border: 1px dashed rgba(251, 191, 36, 0.3);
+}
+
+/* ==========================================
+   Admin Paneli
+   ========================================== */
+#admin-trigger {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.2;
+    /* Gizli durması için düşük opaklık */
+    z-index: 100;
+    transition: opacity 0.3s;
+}
+
+#admin-trigger:hover {
+    opacity: 1;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #1f2937;
+    padding: 20px;
+    border: 1px solid #374151;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 12px;
+    color: white;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-content h2 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    text-align: center;
+    color: #3b82f6;
+}
+
+.admin-grid {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.admin-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-column h3 {
+    font-size: 14px;
+    border-bottom: 1px solid #4b5563;
+    padding-bottom: 5px;
+}
+
+.modal-content label {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.modal-content input {
+    background: #111827;
+    border: 1px solid #374151;
+    color: white;
+    padding: 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    width: 100%;
+}
+
+.admin-row {
+    margin-bottom: 15px;
+}
+
+.admin-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-actions button {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}

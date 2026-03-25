@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İstatistik Analiz Merkezi V4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #09090b;
+            --bg-card: #18181b;
+            --bg-input: #27272a;
+            --border: #3f3f46;
+            --border-focus: #3b82f6;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --badge-bg: #27272a;
+            --badge-pos: rgba(34, 197, 94, 0.15);
+            --badge-pos-text: #4ade80;
+            --badge-neg: rgba(239, 68, 68, 0.15);
+            --badge-neg-text: #f87171;
+
+            --gs-color: #facc15;
+            --bjk-color: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Ev Sahibi Seçici Özel Alanı */
+        .home-advantage-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .home-advantage-title {
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .home-advantage-title span {
+            color: var(--badge-pos-text);
+            font-size: 13px;
+            font-weight: 700;
+            background: var(--badge-pos);
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-left: 12px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .radio-option input[type="radio"] {
+            cursor: pointer;
+            accent-color: var(--border-focus);
+            transform: scale(1.2);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .team-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .team-header {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+
+        .team-name {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .team-gs .team-name {
+            color: var(--gs-color);
+        }
+
+        .team-bjk .team-name {
+            color: var(--bjk-color);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .dual-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: flex-end;
+        }
+
+        .label-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .badge-pos {
+            background-color: var(--badge-pos);
+            color: var(--badge-pos-text);
+        }
+
+        .badge-neg {
+            background-color: var(--badge-neg);
+            color: var(--badge-neg-text);
+        }
+
+        input[type="number"],
+        select,
+        input[type="text"] {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            appearance: none;
+        }
+
+        input[type="number"]:focus,
+        select:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .form-selects {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .form-selects select {
+            padding: 12px 0;
+            text-align-last: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .w-opt {
+            color: #4ade80;
+        }
+
+        .d-opt {
+            color: #94a3b8;
+        }
+
+        .l-opt {
+            color: #f87171;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: var(--text-main);
+            color: var(--bg-body);
+            font-size: 16px;
+            font-weight: 600;
+            padding: 20px;
+            border: none;
+            border-radius: 12px;
+            margin-top: 40px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            background-color: #e4e4e7;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .home-advantage-box {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .container {
+                max-width: 500px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>📊 V4 İstatistik Yönetim Merkezi</h1>
+            <p>Rakip ceza sahasında buluşma, Korner ve xG dahil olmak üzere 10 Gelişmiş Futbol
+                Parametresiyle çalışıyor. Lütfen takımların <b>son 10 maçlık ortalamasını</b> girin.</p>
+
+            <button id="btn-import"
+                style="margin-top: 15px; background: #e67e22; border: none; padding: 10px 20px; border-radius: 8px; color: white; cursor: pointer; font-weight: bold;">📥
+                Mackolik JSON İçe Aktar</button>
+            <input type="file" id="import-file" accept=".json" style="display: none;">
+        </div>
+
+        <!-- Ev Sahibi Avantajı Seçimi -->
+        <div class="home-advantage-box">
+            <div class="home-advantage-title">🏟️ Maç Kimin Sahasında Oynanıyor? <span>+%10 Güç Avantajı</span></div>
+            <div class="radio-group" id="home-advantage-group">
+                <label class="radio-option"><input type="radio" name="stadium" value="GS" checked> 1. Takımın Sahası (Ev
+                    Sahibi)</label>
+                <label class="radio-option"><input type="radio" name="stadium" value="BJK"> 2. Takımın Sahası
+                    (Deplasman)</label>
+                <label class="radio-option"><input type="radio" name="stadium" value="NEUTRAL"> Tarafsız Saha
+                    (Derbi/Final)</label>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- TEAM 1 (GS/HOME) SECTION -->
+            <div class="team-card team-gs">
+                <div class="team-header">
+                    <div class="team-name">Takım 1 Özellikleri (Sol Taraf)</div>
+                </div>
+
+                <div
+                    style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 24px;">
+                    <div>
+                        <div class="label-wrapper"><label>Takım Adı (Kısaltma/Tam)</label></div>
+                        <input type="text" id="gs-name" value="GALATASARAY" placeholder="Örn: GALATASARAY">
+                    </div>
+                    <div>
+                        <div class="label-wrapper"><label>Takım Logosu (URL / Resim Linki)</label></div>
+                        <input type="text" id="gs-logo"
+                            value="https://upload.wikimedia.org/wikipedia/commons/f/f6/Galatasaray_Sports_Club_Logo.png"
+                            placeholder="Şeffaf logo linki yapıştırın">
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="input-group">
+                    <div class="label-wrapper"><label>Son 5 Maç (Eskiden Yeniye)</label></div>
+                    <div class="form-selects">
+                        <select id="gs-m1">
+                            <option value="W" class="w-opt" selected>W</option>
+                            <option value="D" class="d-opt">D</option>
+                            <option value="L" class="l-opt">L</option>
+                        </select>
+                        <select id="gs-m2">
+                            <option value="W" class="w-opt" selected>W</option>
+                            <option value="D" class="d-opt">D</option>
+                            <option value="L" class="l-opt">L</option>
+                        </select>
+                        <select id="gs-m3">
+                            <option value="W" class="w-opt" selected>W</option>
+                            <option value="D" class="d-opt">D</option>
+                            <option value="L" class="l-opt">L</option>
+                        </select>
+                        <select id="gs-m4">
+                            <option value="W" class="w-opt">W</option>
+                            <option value="D" class="d-opt" selected>D</option>
+                            <option value="L" class="l-opt">L</option>
+                        </select>
+                        <select id="gs-m5">
+                            <option value="W" class="w-opt" selected>W</option>
+                            <option value="D" class="d-opt">D</option>
+                            <option value="L" class="l-opt">L</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dual-group">
+                    <div>
+                        <div class="label-wrapper"><label>Beklenen Gol (xG)</label><span
+                                class="badge badge-pos">%20</span></div><input type="number" id="gs-xg" step="0.01"
+                            value="2.15">
+                    </div>
+                    <div>
+                        <div class="label-wrapper"><label>Ceza Sahas. Bul.(RCSB)</label><span
+                                class="badge badge-pos">%10</span></div><input type="number" id="gs-rcsb" value="28">
+                    </div>
+                </div>
+
+                <div class="dual-group">
+                    <div>
+                        <div class="label-wrapper"><label>Atılan Gol</label><span class="badge badge-pos">%10</span>
+                        </div><input type="number" id="gs-golAtilan" step="0.1" value="2.1">
+                    </div>
+                    <div>
+                        <div class="label-wrapper"><label>Yenilen Gol</label><span class="badge badge-neg">-%15</span>
+                        </div><input type="number" id="gs-golYenilen" step="0.1" value="0.8">
+                    </div>
+                </div>
+
+                <div class="dual-group">
+                    <div>
+                        <div class="label-wrapper"><label>İsabetli Şut</label><span class="badge badge-pos">%10</span>
+                        </div><input type="number" id="gs-shotsOn" value="6.2">
+                    </div>
+                    <div>
+                        <div class="label-wrapper"><label>İsabetsiz Şut</label><span class="badge badge-neg">-%5</span>
+                        </div><input type="number" id="gs-shotsOff" value="8.5">
+                    </div>
+                </div>
+
+                <div class="dual-group">
+                    <div>
+                        <div class="label-wrapper"><label>Görülen Kart Sayısı</label><span
+                                class="badge badge-neg">-%5</span></div><input type="number" id="gs-cards" value="2.1">
+                    </div>
+                    <div>
+                        <div class="label-wrapper"><label>Kazanılan Korner</label><span
+                                class="badge badge-pos">%5</span>
+                        </div><input type="number" id="gs-corners" value="5.6">
+                    </div>
+                </div>
+
+                <div class="dual-group">
+                    <div>
+                        <div class="label-wrapper"><label>Topla Oynama Yüzdesi (%)</label><span
+                                class="badge badge-pos">%5</span></div><input type="number" id="gs-possession" value="55.0">
+                    </div>
+                    <div>
+                        <div class="label-wrapper"><label>Yapılan Faul Sayısı</label><span
+                                class="badge badge-neg">-%5</span></div><input type="number" id="gs-fouls" value="12.4">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEAM 2 (BJK/AWAY) SECTION -->
+            <div class="team-card team-bjk">
+                <div class="team-header">
+                    <div class="team-name">Takım 2 Özellikleri (Sağ Taraf)</div>
+                </div>
+
+                <div
+                    style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; border-bottom: 1px dashed var(--border); padding-bottom: 24px;">
+                    <div>
+                        <div class="label-wrapper"><label>Takım Adı (Kısaltma/Tam)</label></div>
+                        <input type="text" id="bjk-name" value="BEŞİKTAŞ" placeholder="Örn: BEŞİKTAŞ">
+                    </div>
+                    <div>
+                        <div class="label-wrapper"><label>Takım Logosu (URL / Resim Linki)</label></div>
+                        <input type="text" id="bjk-logo"
+                            value="https://upload.wikimedia.org/wikipedia/commons/0/08/Be%C5%9Fikta%C5%9F_Logo_Be%C5%9Fikta%C5%9F_Amblem_Be%C5%9Fikta%C5%9F_Arma.png"
+                            placeholder="Şeffaf logo linki yapıştırın">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="label-wrapper"><label>Son 5 Maç (Eskiden Yeniye)</label></div>
+                    <div class="form-selects">
+                        <select id="bjk-m1">
+                            <option value="W" class="w-opt" selected>W</option>
+                            <option value="D" class="d-opt">D</option>
+                            <option value="L" class="l-opt">L</option>
+                        </select>
+                        <select id="bjk-m2">
+                            <option value="W" class="w-opt">W</option>
+                            <option value="D" class="d-opt" selected>D</option>
+                            <option value="L" class="l-opt">L</option>
+                        </select>
+                        <select id="bjk-m3">
+                            <option value="W" class="w-opt" selected>W</option>
+                            <option value="D" class="d-opt">D</option>
+                            <option value="L" class="l-opt">L</option>
+                        </select>
+                        <select id="bjk-m4">
+                            <option value="W" class="w-opt">W</option>
+                            <option value="D" class="d-opt">D</option>
+                            <option value="L" class="l-opt" selected>L</option>
+                        </select>
+                        <select id="bjk-m5">
+                            <option value="W" class="w-opt" selected>W</option>
+                            <option value="D" class="d-opt">D</option>
+                            <option value="L" class="l-opt">L</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dual-group">
+                    <div>
+                        <div class="label-wrapper"><label>Beklenen Gol (xG)</label><span
+                                class="badge badge-pos">%20</span></div><input type="number" id="bjk-xg" step="0.01"
+                            value="1.85">
+                    </div>
+                    <div>
+                        <div class="label-wrapper"><label>Ceza Sahas. Bul.(RCSB)</label><span
+                                class="badge badge-pos">%10</span></div><input type="number" id="bjk-rcsb" value="22">
+                    </div>
+                </div>
+
+                <div class="dual-group">
+                    <div>
+                        <div class="label-wrapper"><label>Atılan Gol</label><span class="badge badge-pos">%10</span>
+                        </div><input type="number" id="bjk-golAtilan" step="0.1" value="1.8">
+                    </div>
+                    <div>
+                        <div class="label-wrapper"><label>Yenilen Gol</label><span class="badge badge-neg">-%15</span>
+                        </div><input type="number" id="bjk-golYenilen" step="0.1" value="1.1">
+                    </div>
+                </div>
+
+                <div class="dual-group">
+                    <div>
+                        <div class="label-wrapper"><label>İsabetli Şut</label><span class="badge badge-pos">%10</span>
+                        </div><input type="number" id="bjk-shotsOn" value="4.5">
+                    </div>
+                    <div>
+                        <div class="label-wrapper"><label>İsabetsiz Şut</label><span class="badge badge-neg">-%5</span>
+                        </div><input type="number" id="bjk-shotsOff" value="6.8">
+                    </div>
+                </div>
+
+                <div class="dual-group">
+                    <div>
+                        <div class="label-wrapper"><label>Görülen Kart Sayısı</label><span
+                                class="badge badge-neg">-%5</span></div><input type="number" id="bjk-cards" value="2.5">
+                    </div>
+                    <div>
+                        <div class="label-wrapper"><label>Kazanılan Korner</label><span
+                                class="badge badge-pos">%5</span>
+                        </div><input type="number" id="bjk-corners" value="4.3">
+                    </div>
+                </div>
+
+                <div class="dual-group">
+                    <div>
+                        <div class="label-wrapper"><label>Topla Oynama Yüzdesi (%)</label><span
+                                class="badge badge-pos">%5</span></div><input type="number" id="bjk-possession"
+                            value="45.0">
+                    </div>
+                    <div>
+                        <div class="label-wrapper"><label>Yapılan Faul Sayısı</label><span
+                                class="badge badge-neg">-%5</span></div><input type="number" id="bjk-fouls"
+                            value="15.2">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="submit-btn" id="btn-launch">Gelişmiş Formülü Çalıştır & Şovu Başlat</button>
+    </div>
+
+    <script>
+        document.getElementById('btn-launch').addEventListener('click', () => {
+
+            // Seçili Ev Sahibi Avantajını Bul (GS, BJK veya NEUTRAL)
+            const hostAdvantage = document.querySelector('input[name="stadium"]:checked').value;
+
+            const gsForm = [
+                document.getElementById('gs-m1').value, document.getElementById('gs-m2').value,
+                document.getElementById('gs-m3').value, document.getElementById('gs-m4').value, document.getElementById('gs-m5').value
+            ];
+
+            const bjkForm = [
+                document.getElementById('bjk-m1').value, document.getElementById('bjk-m2').value,
+                document.getElementById('bjk-m3').value, document.getElementById('bjk-m4').value, document.getElementById('bjk-m5').value
+            ];
+
+            const rawSciData = {
+                host: hostAdvantage, // Eklendi!
+                teamHome: {
+                    id: "HOME",
+                    name: document.getElementById('gs-name').value,
+                    logo: document.getElementById('gs-logo').value,
+                    form: gsForm,
+                    stats: {
+                        xg: parseFloat(document.getElementById('gs-xg').value),
+                        rcsb: parseInt(document.getElementById('gs-rcsb').value),
+                        golAtilan: parseFloat(document.getElementById('gs-golAtilan').value),
+                        golYenilen: parseFloat(document.getElementById('gs-golYenilen').value),
+                        shotsOnTarget: parseFloat(document.getElementById('gs-shotsOn').value),
+                        shotsOffTarget: parseFloat(document.getElementById('gs-shotsOff').value),
+                        cards: parseFloat(document.getElementById('gs-cards').value),
+                        corners: parseFloat(document.getElementById('gs-corners').value),
+                        possession: parseFloat(document.getElementById('gs-possession').value),
+                        fouls: parseFloat(document.getElementById('gs-fouls').value)
+                    }
+                },
+                teamAway: {
+                    id: "AWAY",
+                    name: document.getElementById('bjk-name').value,
+                    logo: document.getElementById('bjk-logo').value,
+                    form: bjkForm,
+                    stats: {
+                        xg: parseFloat(document.getElementById('bjk-xg').value),
+                        rcsb: parseInt(document.getElementById('bjk-rcsb').value),
+                        golAtilan: parseFloat(document.getElementById('bjk-golAtilan').value),
+                        golYenilen: parseFloat(document.getElementById('bjk-golYenilen').value),
+                        shotsOnTarget: parseFloat(document.getElementById('bjk-shotsOn').value),
+                        shotsOffTarget: parseFloat(document.getElementById('bjk-shotsOff').value),
+                        cards: parseFloat(document.getElementById('bjk-cards').value),
+                        corners: parseFloat(document.getElementById('bjk-corners').value),
+                        possession: parseFloat(document.getElementById('bjk-possession').value),
+                        fouls: parseFloat(document.getElementById('bjk-fouls').value)
+                    }
+                }
+            };
+
+            localStorage.setItem("soccerScienceRawData", JSON.stringify(rawSciData));
+            
+            // Veriyi videoyu çekecek Playwright motoruna aktarabilmek icin sihirbaz: Panoya gizlice kopyala!
+            const textarea = document.createElement("textarea");
+            textarea.value = "SOCCER_DATA:" + JSON.stringify(rawSciData);
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+
+            window.location.href = "index.html";
+        });
+
+        const selects = document.querySelectorAll('select');
+        selects.forEach(select => {
+            select.addEventListener('change', function () {
+                if (this.value === 'W') this.style.color = '#4ade80';
+                else if (this.value === 'D') this.style.color = '#94a3b8';
+                else if (this.value === 'L') this.style.color = '#f87171';
+            });
+            if (select.value === 'W') select.style.color = '#4ade80';
+            else if (select.value === 'D') select.style.color = '#94a3b8';
+            else if (select.value === 'L') select.style.color = '#f87171';
+        });
+
+        // Mackolik Import İşlemleri
+        document.getElementById('btn-import').addEventListener('click', () => {
+            document.getElementById('import-file').click();
+        });
+
+        document.getElementById('import-file').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    // Kullanıcıdan İçe Aktarılacak Tarafı Seçmesini İste (Takım 1 mi Takım 2 mi)
+                    const side = prompt(`"${data.team}" takımının verilerini hangi tarafa doldurmak istiyorsunuz? \n\n1 = Takım 1 (GS/Sol) \n2 = Takım 2 (BJK/Sağ)`, "1");
+
+                    if (side !== "1" && side !== "2") {
+                        alert("Geçersiz seçim. İşlem iptal edildi.");
+                        return;
+                    }
+
+                    const prefix = side === "1" ? "gs" : "bjk";
+
+                    // İsim
+                    document.getElementById(`${prefix}-name`).value = data.team.toUpperCase();
+
+                    // İstatistikleri eşleştir ve doldur
+                    const mapping = {
+                        "Beklenen (xG)": `${prefix}-xg`,
+                        "RCSB": `${prefix}-rcsb`,
+                        "Atılan Gol": `${prefix}-golAtilan`,
+                        "Yenilen Gol": `${prefix}-golYenilen`,
+                        "İsab. Şut": `${prefix}-shotsOn`,
+                        "İsabsz. Şut": `${prefix}-shotsOff`,
+                        "Gö. Kart": `${prefix}-cards`,
+                        "Korner": `${prefix}-corners`,
+                        "Topla Oynama": `${prefix}-possession`,
+                        "Faul": `${prefix}-fouls`
+                    };
+
+                    for (const [jsonKey, inputId] of Object.entries(mapping)) {
+                        if (data.stats[jsonKey] !== undefined) {
+                            document.getElementById(inputId).value = data.stats[jsonKey];
+                        }
+                    }
+
+                    alert(`Başarılı! "${data.team}" verileri Takım ${side} (Sol/Sağ) kısmına otomatik dolduruldu.`);
+
+                } catch (error) {
+                    alert("JSON dosyası okunurken bir hata oluştu: " + error.message);
+                }
+            };
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+
+</html>

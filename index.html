@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapay Zeka Destekli Derbi Analizi</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app-container">
+
+        <!-- Yükleme Ekranı (Fake API) -->
+        <div id="loading-screen" class="screen active">
+            <div class="loader"></div>
+            <h2 class="loading-text">Yapay Zeka Verileri Çekiyor...</h2>
+            <p class="loading-subtext">Son 5 maç, xG oranları ve takım formları analiz ediliyor</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- Analiz Ekranı -->
+        <div id="analysis-screen" class="screen">
+            <h1 class="header-title">🔥 DERBİ ÖZEL ANALİZİ 🔥</h1>
+
+            <!-- Takım Başlıkları -->
+            <div class="teams-header">
+                <div class="team home-team">
+                    <img id="home-logo-img" src="" alt="Home Logo">
+                    <h2 id="home-name-txt">TAKIM 1</h2>
+                    <div class="form-guide" id="home-form">
+                        <!-- W D L -->
+                    </div>
+                </div>
+                <div class="vs-badge">VS</div>
+                <div class="team away-team">
+                    <img id="away-logo-img" src="" alt="Away Logo">
+                    <h2 id="away-name-txt">TAKIM 2</h2>
+                    <div class="form-guide" id="away-form">
+                        <!-- W D L -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sayısal Özet -->
+            <div class="stats-summary">
+                <div class="stat-row">
+                    <span class="home-stat" id="home-xg">0.00</span>
+                    <span class="stat-label">Gol Beklentisi (xG)</span>
+                    <span class="away-stat" id="away-xg">0.00</span>
+                </div>
+                <div class="stat-row">
+                    <span class="home-stat" id="home-rcsb">0</span>
+                    <span class="stat-label">Baskı (RCSB)</span>
+                    <span class="away-stat" id="away-rcsb">0</span>
+                </div>
+            </div>
+
+            <!-- Radar Grafiği Sahnesi -->
+            <div class="chart-container">
+                <canvas id="radarChart"></canvas>
+            </div>
+
+            <!-- Bar Grafiği -->
+            <div class="chart-container bar-container">
+                <canvas id="barChart"></canvas>
+            </div>
+
+            <!-- Yapay Zeka Kazanma Olasılığı -->
+            <div class="prediction-box">
+                <h3>YAPAY ZEKA KAZANMA İHTİMALİ</h3>
+                <div class="probability-bar">
+                    <div class="prob-home" id="prob-home-bar" style="width: 0;">
+                        <span id="prob-home-text">0</span>
+                    </div>
+                    <div class="prob-tie" id="prob-tie-bar" style="width: 0;">
+                        <span id="prob-tie-text">0</span>
+                    </div>
+                    <div class="prob-away" id="prob-away-bar" style="width: 0;">
+                        <span id="prob-away-text">0</span>
+                    </div>
+                </div>
+                <div class="prob-labels">
+                    <span>GS</span>
+                    <span>Beraberlik</span>
+                    <span>BJK</span>
+                </div>
+            </div>
+
+            <div class="footer-cta">
+                Sence analize göre kim kazanır? 💬 Yorumlara yaz!
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js?v=2"></script>
+</body>
+
+</html>
